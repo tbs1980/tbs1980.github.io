@@ -1,0 +1,275 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Integrating github projects with Travis-CI &#8211; Sreekumar Thaithara Balan's Blog</title>
+<meta name="description" content="How to integrate github project with Travis-CI?">
+<meta name="keywords" content="continuous integration, Travis-CI, github, c, c++">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/">
+<meta name="twitter:title" content="Integrating github projects with Travis-CI">
+<meta name="twitter:description" content="How to integrate github project with Travis-CI?">
+<meta name="twitter:creator" content="@sreekumar_balan">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Integrating github projects with Travis-CI">
+<meta property="og:description" content="How to integrate github project with Travis-CI?">
+<meta property="og:url" content="/travis-ci-integration/">
+<meta property="og:site_name" content="Sreekumar Thaithara Balan's Blog">
+
+
+
+
+
+<link rel="canonical" href="/travis-ci-integration/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Sreekumar Thaithara Balan's Blog Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+<nav id="dl-menu" class="dl-menuwrapper" role="navigation">
+	<button class="dl-trigger">Open Menu</button>
+	<ul class="dl-menu">
+		<li><a href="/">Home</a></li>
+		<li>
+			<a href="#">About</a>
+			<ul class="dl-submenu">
+				<li>
+					<img src="/images/avatarMunch.png" alt="Sreekumar Thaithara Balan photo" class="author-photo">
+					<h4>Sreekumar Thaithara Balan</h4>
+					<p>An astronomer who is interested in the application of novel technologies in science and in science for creating novel technology.</p>
+				</li>
+				<li><a href="/about/"><span class="btn btn-inverse">Learn More</span></a></li>
+				<li>
+					<a href="mailto:sbalan@star.ucl.ac.uk"><i class="fa fa-fw fa-envelope"></i> Email</a>
+				</li>
+				<li>
+					<a href="http://twitter.com/sreekumar_balan"><i class="fa fa-fw fa-twitter"></i> Twitter</a>
+				</li>
+				
+				
+				<li>
+					<a href="http://linkedin.com/in/stbalan"><i class="fa fa-fw fa-linkedin"></i> LinkedIn</a>
+				</li>
+				<li>
+					<a href="http://github.com/tbs1980"><i class="fa fa-fw fa-github"></i> GitHub</a>
+				</li>
+				
+				
+				
+				
+			</ul><!-- /.dl-submenu -->
+		</li>
+		<li>
+			<a href="#">Posts</a>
+			<ul class="dl-submenu">
+				<li><a href="/posts/">All Posts</a></li>
+				<li><a href="/tags/">All Tags</a></li>
+			</ul>
+		</li>
+		
+	    
+	        
+	    
+	    <li><a href="/publications/" >Publications</a></li>
+	  
+	    
+	        
+	    
+	    <li><a href="/teaching/" >Teaching</a></li>
+	  
+	</ul><!-- /.dl-menu -->
+</nav><!-- /.dl-menuwrapper -->
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <header class="header-title">
+      <div class="header-title-wrap">
+        
+          <h1 class="entry-title"><a href="/travis-ci-integration/" rel="bookmark" title="Integrating github projects with Travis-CI">Integrating github projects with Travis-CI</a></h1>
+        
+        <h2><span class="entry-date date published"><time datetime="2015-03-28T00:00:00+00:00">March 28, 2015</time></span></h2>
+        
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~1 minute
+        </p><!-- /.entry-reading-time -->
+        
+      </div><!-- /.header-title-wrap -->
+    </header>
+    <div class="entry-content">
+      <p>Continuous integration is extremely useful when developing a project with multiple collaborators. Travis-CI platform offers an excellent service for github based projects. I wanted to create and example project and see what are the steps required for integrating github project with Travis-CI.</p>
+
+<h2 id="overview">Overview</h2>
+
+<p>Here is an excellent summary of Continuous Integration from <a href="https://github.com/mbonaci/mbo-storm/wiki/Integrate-Travis-CI-with-your-GitHub-repo">Marko Bonaci</a></p>
+
+<blockquote>
+  <p>Continuous Integration is the umbrella for various techniques and practices that every self-respecting software project should employ.The main goal is to eliminate the long and tedious integration process, the work that you normally have to do between version’s final development stage and its deployment in production. So you routinely perform (or rather, CI performs for you) the same sequence of steps, thus making the whole process polished and reliable.</p>
+</blockquote>
+
+<p>The main features of Travis-CI agree</p>
+
+<ol>
+  <li>Automatically detects when a commit has been made and pushed to a GitHub repository that is using Travis CI, and each time this happens,</li>
+  <li>It will automatically try to build the project and run tests.</li>
+  <li>Project management integration</li>
+  <li>Project Dashboard -&gt; everything is out in the open (generally without any read access restrictions, making it available to all interested parties)</li>
+  <li>Supports a wide range of languages,</li>
+</ol>
+
+<h2 id="integrating-a-github-project">Integrating a GitHub project</h2>
+
+<p>If the project is GitHub the integration is very easy. Here are the basic steps I followed</p>
+
+<ol>
+  <li>Sign in to <a href="https://travis-ci.org/">Travis-CI</a> using a GitHub id</li>
+  <li>In the upper right corner click on your name (or choose <code>Accounts</code>) to open your Travis-ci profile. Then you will be able to see the GitHub repositories. The sync toggle-slider will enable</li>
+  <li>Now in the GitHub local repo, create a <code>.travis.yml</code> file. You can see an example <a href="https://github.com/tbs1980/TravisCI/blob/master/.travis.yml">here</a>. More documentation can be found <a href="http://docs.travis-ci.com/user/getting-started/">here</a>. If you have more then one language in the code you may have to be a bit creative and do something like <a href="https://github.com/tbs1980/Ellipsis/blob/master/.travis.yml">this</a></li>
+  <li>As soon as you push this to GitHub, you will see that the build is happening in your Travis-CI Dashboard.</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">language</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cpp</span>
+
+<span class="l-Scalar-Plain">compiler</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">gcc</span>
+
+<span class="l-Scalar-Plain">before_install</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">echo $LANG</span>
+
+<span class="l-Scalar-Plain">before_script</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cmake CMakeLists.txt</span>
+
+<span class="l-Scalar-Plain">script</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">$CXX --version</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">make</span></code></pre></div>
+
+<p>You can even embed the build status in the README.md of your project. See the documentation <a href="http://docs.travis-ci.com/user/status-images/">here</a></p>
+
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="/tags/#continuous integration" title="Pages tagged continuous integration" class="tag"><span class="term">continuous integration</span></a><a href="/tags/#Travis-CI" title="Pages tagged Travis-CI" class="tag"><span class="term">Travis-CI</span></a><a href="/tags/#github" title="Pages tagged github" class="tag"><span class="term">github</span></a><a href="/tags/#c" title="Pages tagged c" class="tag"><span class="term">c</span></a><a href="/tags/#c++" title="Pages tagged c++" class="tag"><span class="term">c++</span></a></span>
+        <span>Updated on <span class="entry-date date updated"><time datetime="2015-03-28">March 28, 2015</time></span></span>
+        <span class="author vcard"><span class="fn">Sreekumar Thaithara Balan</span></span>
+        <div class="social-share">
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=/travis-ci-integration/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=/travis-ci-integration/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=/travis-ci-integration/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+  </ul>
+</div><!-- /.social-share -->
+      </footer>
+    </div><!-- /.entry-content -->
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="/rust-language/" class="read-more-btn">Read More</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="/intel-xeon-phi/" title="Intel Xeon Phi for High Performance Computing">Intel Xeon Phi for High Performance Computing</a></h3>
+      <p>My experience with installing Intel Xeon Phi on a desktop <a href="/intel-xeon-phi/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="/fpga-based-hpc/" title="FPGA for scientific computing">FPGA for scientific computing</a></h4>
+        <span>Published on June 24, 2015</span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="/stochastic-gradient-hmc/" title="Stochastic gradient Hamiltonian Monte Carlo">Stochastic gradient Hamiltonian Monte Carlo</a></h4>
+        <span>Published on May 03, 2015</span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2015 Sreekumar Thaithara Balan. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/hpstr-jekyll-theme/" rel="nofollow">HPSTR Theme</a>.</span>
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+<script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'hpstrtheme'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	        
+
+</body>
+</html>

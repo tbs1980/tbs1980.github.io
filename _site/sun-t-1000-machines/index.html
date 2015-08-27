@@ -1,0 +1,391 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Sun T-1000 server &#8211; Sreekumar Thaithara Balan's Blog</title>
+<meta name="description" content="Installing Debian on Sun T-1000 machines">
+<meta name="keywords" content="Sun T-1000, Linux, Debian, Sun, installation, server, HPC, network installation, tftpboot, SPARC64">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/abstract-7.jpg">
+
+<meta name="twitter:title" content="Sun T-1000 server">
+<meta name="twitter:description" content="Installing Debian on Sun T-1000 machines">
+<meta name="twitter:creator" content="@sreekumar_balan">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sun T-1000 server">
+<meta property="og:description" content="Installing Debian on Sun T-1000 machines">
+<meta property="og:url" content="/sun-t-1000-machines/">
+<meta property="og:site_name" content="Sreekumar Thaithara Balan's Blog">
+
+
+
+
+
+<link rel="canonical" href="/sun-t-1000-machines/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Sreekumar Thaithara Balan's Blog Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+</head>
+
+<body id="post" class="feature">
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+<nav id="dl-menu" class="dl-menuwrapper" role="navigation">
+	<button class="dl-trigger">Open Menu</button>
+	<ul class="dl-menu">
+		<li><a href="/">Home</a></li>
+		<li>
+			<a href="#">About</a>
+			<ul class="dl-submenu">
+				<li>
+					<img src="/images/avatarMunch.png" alt="Sreekumar Thaithara Balan photo" class="author-photo">
+					<h4>Sreekumar Thaithara Balan</h4>
+					<p>An astronomer who is interested in the application of novel technologies in science and in science for creating novel technology.</p>
+				</li>
+				<li><a href="/about/"><span class="btn btn-inverse">Learn More</span></a></li>
+				<li>
+					<a href="mailto:sbalan@star.ucl.ac.uk"><i class="fa fa-fw fa-envelope"></i> Email</a>
+				</li>
+				<li>
+					<a href="http://twitter.com/sreekumar_balan"><i class="fa fa-fw fa-twitter"></i> Twitter</a>
+				</li>
+				
+				
+				<li>
+					<a href="http://linkedin.com/in/stbalan"><i class="fa fa-fw fa-linkedin"></i> LinkedIn</a>
+				</li>
+				<li>
+					<a href="http://github.com/tbs1980"><i class="fa fa-fw fa-github"></i> GitHub</a>
+				</li>
+				
+				
+				
+				
+			</ul><!-- /.dl-submenu -->
+		</li>
+		<li>
+			<a href="#">Posts</a>
+			<ul class="dl-submenu">
+				<li><a href="/posts/">All Posts</a></li>
+				<li><a href="/tags/">All Tags</a></li>
+			</ul>
+		</li>
+		
+	    
+	        
+	    
+	    <li><a href="/publications/" >Publications</a></li>
+	  
+	    
+	        
+	    
+	    <li><a href="/teaching/" >Teaching</a></li>
+	  
+	</ul><!-- /.dl-menu -->
+</nav><!-- /.dl-menuwrapper -->
+
+
+
+<div class="entry-header">
+  <div class="image-credit">Image source: <a href="http://www.dargadgetz.com/ios-7-abstract-wallpaper-pack-for-iphone-5-and-ipod-touch-retina/">dargadgetz</a></div><!-- /.image-credit -->
+  <div class="entry-image">
+    <img src="/images/abstract-7.jpg" alt="Sun T-1000 server">
+  </div><!-- /.entry-image -->
+</div><!-- /.entry-header -->
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <header class="header-title">
+      <div class="header-title-wrap">
+        
+          <h1 class="entry-title"><a href="/sun-t-1000-machines/" rel="bookmark" title="Sun T-1000 server">Sun T-1000 server</a></h1>
+        
+        <h2><span class="entry-date date published"><time datetime="2014-07-07T00:00:00+01:00">July 07, 2014</time></span></h2>
+        
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~3 minutes
+        </p><!-- /.entry-reading-time -->
+        
+      </div><!-- /.header-title-wrap -->
+    </header>
+    <div class="entry-content">
+      <p>Recently I got hold of 2 Sun T-1000 machines off ebay! It was my first “contact” with a server. I mean, the only way to connect with this server is through a serial terminal. Facinating! The specs of this machine are really impressive. It has an 8 core Sun Ultra Spark III processor. These are actually not floating point units, but rather integer units. Hence the floating point performance is will not really scale as we would think. Installing Debian on this is a very challenging task and it took a full of work (baisally a weekend) to get this installed. Here are the steps I took in the marathon process.</p>
+
+<h2 id="overview">Overview</h2>
+
+<p>The server looks like below</p>
+
+<p><img src="/images/sunfiret1000open.jpg" alt="T1000" /></p>
+
+<p>I found some documents about the machine.</p>
+
+<ol>
+  <li><a href="http://www.spectra.com/wp-content/uploads/coolthreadst1000.pdf">Datasheet</a></li>
+  <li><a href="http://docs.oracle.com/cd/E19076-01/t1k.srvr/819-3245-12/819-3245-12.pdf">Server Overview</a></li>
+  <li><a href="http://docs.oracle.com/cd/E19076-01/t1k.srvr/819-3248-13/819-3248-13.pdf">Service Manual</a></li>
+  <li><a href="http://www.sunhelp.org/docs/t1000/sysadmin-guide.pdf">Server System Admin Guide</a></li>
+</ol>
+
+<h2 id="firing-up">Firing up</h2>
+
+<p>I connected the machine to my router through Network Management Port (NMP). It I can see that it has been assigned a ip-address. Now I can ssh into the machine’s firmware. Default admin username is admin and password is “password” I think. At least it worked for me. When I type help in the sc prompt, I get the following result.</p>
+
+<pre><code>sc&gt; help
+Available commands
+------------------
+Power and Reset control commands:
+  powercycle [-y] [-f]
+  poweroff [-y] [-f]
+  poweron [-c] [FRU]
+  reset [-y] [-c]
+Console commands:
+  break [-y] [-c]
+  console [-f]
+  consolehistory [-b lines|-e lines|-v] [-g lines] [boot|run]
+Boot control commands:
+  bootmode [normal|reset_nvram|bootscript="string"]
+  setkeyswitch [-y] &lt;normal|stby|diag|locked&gt;
+  showkeyswitch
+Locator LED commands:
+  setlocator [on|off]
+  showlocator
+Status and Fault commands:
+  clearasrdb
+  clearfault &lt;UUID&gt;
+  disablecomponent [asr-key]
+  enablecomponent [asr-key]
+  removefru [-y] &lt;FRU&gt;
+  setfru -c [data]
+  showcomponent [asr-key]
+  showenvironment
+  showfaults [-v]
+  showfru [-g lines] [-s|-d] [FRU]
+  showlogs [-b lines|-e lines|-v] [-g lines] [-p logtype[r|p]]
+  shownetwork [-v]
+  showplatform [-v]
+ALOM Configuration commands:
+  setdate &lt;[mmdd]HHMM | mmddHHMM[cc]yy][.SS]&gt;
+  setsc [param] [value]
+  setupsc
+  showdate
+  showhost [version]
+  showsc [-v] [param]
+ALOM Administrative commands:
+  flashupdate &lt;-s IPaddr -f pathname&gt; [-v]
+  help [command]
+  logout
+  password
+  resetsc [-y]
+  restartssh [-y |-n]
+  setdefaults [-y] [-a]
+  ssh-keygen [-t rsa|dsa] [-r] [-l]
+  showusers [-g lines]
+  useradd &lt;username&gt;
+  userdel [-y] &lt;username&gt;
+  userpassword &lt;username&gt;
+  userperm &lt;username&gt; [c][u][a][r]
+  usershow [username]
+</code></pre>
+
+<p>In order to boot I typed</p>
+
+<pre><code>sc&gt; poweron -c
+</code></pre>
+
+<p>It gave me a warning message</p>
+
+<p>Warning: User &lt; &gt; currently has write permission to this console and forcibly removing them will terminate any current write actions and all work will be lost.  Would you like to continue? [y/n]y and I typed y.</p>
+
+<pre><code>Enter #. to return to ALOM.
+Done
+0:0&gt;Test Memory....Done
+0:0&gt;Test Slave Threads Basic....Done
+0:0&gt;Extended CPU Tests....Done
+0:0&gt;Scrub Memory....Done
+0:0&gt;Functional CPU Tests....Done
+0:0&gt;Extended Memory Tests....Done
+0:0&gt;IO-Bridge Tests....Done
+0:0&gt;INFO:
+0:0&gt; POST Passed all devices.
+0:0&gt;POST: Return to VBSC.
+0:0&gt;Master set ACK for vbsc runpost command and spin...
+
+SC Alert: Host system has shut down.
+JAN 19 19:16:15 ERROR: Available system memory is less than physically installed memory
+JAN 19 19:16:15 ERROR: Using unsupported memory configuration
+JAN 19 19:16:15 ERROR: System DRAM  Available: 004096 MB  Physical: 008192 MB
+
+SC Alert: Host System has Reset
+/
+
+Sun Fire(TM) T1000, No Keyboard
+Copyright 2006 Sun Microsystems, Inc.  All rights reserved.
+OpenBoot 4.23.4, 4088 MB memory available, Serial #71818864.
+Ethernet address 0:14:4f:47:de:70, Host ID: 8447de70.
+
+
+
+ERROR: The following devices are disabled:
+    MB/CMP0/CH0/R1/D1
+
+
+{0} ok
+</code></pre>
+
+<p>I typed help</p>
+
+<pre><code>{0} ok help
+Enter 'help command-name' or 'help category-name' for more help
+(Use ONLY the first word of a category description)
+Examples:  help select   -or-   help line
+    Main categories are:
+Breakpoints (debugging)
+Repeated loops
+Defining new commands
+Numeric output
+Radix (number base conversions)
+Arithmetic
+Memory access
+Line editor
+System and boot configuration parameters
+Select I/O devices
+eject devices
+Power on reset
+Diag (diagnostic routines)
+Resume execution
+File download and boot
+nvramrc (making new commands permanent)
+</code></pre>
+
+<p><code>printenv</code> command will give all the environment variables. What we need to setup the netboot is <code>netowork-boot-arguments</code>.</p>
+
+<pre><code>ok# setenv network-boot-arguments host-ip=192.168.0.20,subnet-mask=255.255.255.0,file=tftp://192.168.0.11/debiansparcboot.img
+</code></pre>
+
+<p>where host-ip is the ip-address of the sun-machine (the current one) the tftp address is the address of the machine where the tftp server is hosted. It is followed by the name of the boot image. More documentation can be found at</p>
+
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="/tags/#Sun T-1000" title="Pages tagged Sun T-1000" class="tag"><span class="term">Sun T-1000</span></a><a href="/tags/#Linux" title="Pages tagged Linux" class="tag"><span class="term">Linux</span></a><a href="/tags/#Debian" title="Pages tagged Debian" class="tag"><span class="term">Debian</span></a><a href="/tags/#Sun" title="Pages tagged Sun" class="tag"><span class="term">Sun</span></a><a href="/tags/#installation" title="Pages tagged installation" class="tag"><span class="term">installation</span></a><a href="/tags/#server" title="Pages tagged server" class="tag"><span class="term">server</span></a><a href="/tags/#HPC" title="Pages tagged HPC" class="tag"><span class="term">HPC</span></a><a href="/tags/#network installation" title="Pages tagged network installation" class="tag"><span class="term">network installation</span></a><a href="/tags/#tftpboot" title="Pages tagged tftpboot" class="tag"><span class="term">tftpboot</span></a><a href="/tags/#SPARC64" title="Pages tagged SPARC64" class="tag"><span class="term">SPARC64</span></a></span>
+        <span>Updated on <span class="entry-date date updated"><time datetime="2014-07-07">July 07, 2014</time></span></span>
+        <span class="author vcard"><span class="fn">Sreekumar Thaithara Balan</span></span>
+        <div class="social-share">
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=/sun-t-1000-machines/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=/sun-t-1000-machines/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=/sun-t-1000-machines/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+  </ul>
+</div><!-- /.social-share -->
+      </footer>
+    </div><!-- /.entry-content -->
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="/kaggle-decmeg/" class="read-more-btn">Read More</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="/intel-xeon-phi/" title="Intel Xeon Phi for High Performance Computing">Intel Xeon Phi for High Performance Computing</a></h3>
+      <p>My experience with installing Intel Xeon Phi on a desktop <a href="/intel-xeon-phi/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="/fpga-based-hpc/" title="FPGA for scientific computing">FPGA for scientific computing</a></h4>
+        <span>Published on June 24, 2015</span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="/stochastic-gradient-hmc/" title="Stochastic gradient Hamiltonian Monte Carlo">Stochastic gradient Hamiltonian Monte Carlo</a></h4>
+        <span>Published on May 03, 2015</span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2015 Sreekumar Thaithara Balan. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/hpstr-jekyll-theme/" rel="nofollow">HPSTR Theme</a>.</span>
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+<script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'hpstrtheme'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	        
+
+</body>
+</html>
