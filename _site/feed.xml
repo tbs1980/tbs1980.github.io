@@ -2,27 +2,143 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
 <title type="text">Sreekumar Thaithara Balan's Blog</title>
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
-<link rel="self" type="application/atom+xml" href="/feed.xml" />
-<link rel="alternate" type="text/html" href="" />
-<updated>2015-08-27T11:49:42+01:00</updated>
-<id>/</id>
+<link rel="self" type="application/atom+xml" href="http://tbs1980.github.io/feed.xml" />
+<link rel="alternate" type="text/html" href="http://tbs1980.github.io" />
+<updated>2015-10-04T23:40:59+01:00</updated>
+<id>http://tbs1980.github.io/</id>
 <author>
   <name>Sreekumar Thaithara Balan</name>
-  <uri>/</uri>
+  <uri>http://tbs1980.github.io/</uri>
   <email>sbalan@star.ucl.ac.uk</email>
 </author>
 
 
 <entry>
+  <title type="html"><![CDATA[Analysing code coverage using gcov]]></title>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/code-coverage-with-gcov/" />
+  <id>http://tbs1980.github.io/code-coverage-with-gcov</id>
+  <updated>2015-08-30T00:00:00-00:00</updated>
+  <published>2015-08-30T00:00:00+01:00</published>
+  
+  <author>
+    <name>Sreekumar Thaithara Balan</name>
+    <uri>http://tbs1980.github.io</uri>
+    <email>sbalan@star.ucl.ac.uk</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Code coverage gives us an idea about what parts of the code is covered by the unit tests.&lt;/p&gt;
+
+&lt;h2 id=&quot;gcov&quot;&gt;&lt;code&gt;gcov&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;There are several open source tools available for analysing coverage. In this post, however, I will be using &lt;code&gt;gcov&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let us consider a simple example of a calculator program. My calculator class is shown below&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;scalarType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;calculator&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subtract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;multiply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;divide&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scalarType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;There are several public functions that emulates the functionality of a calculator. Ideally, one would like to write a unit test corresponding to each of these functions so that the code is robust. The code coverage tools help you understand how much of your code is covered by the test programs. Now let us write a test program for the &lt;code&gt;add&lt;/code&gt; function as shown below&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;calculator.hpp&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;calculator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If this is the only test program you have, then the code coverage tools will tell you that the your code is not completely covered. Now let us consider unit tests for another function &lt;code&gt;abs&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;calculator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Imagine that this is the only test function for the &lt;code&gt;abs&lt;/code&gt; function. We then know that the test will not go beyond the &lt;code&gt;if&lt;/code&gt; clause.  This is where code coverage tools can be helpful. Let us see what the &lt;a href=&quot;https://codecov.io/github/tbs1980/CodCov/Calculator/calculator.hpp?ref=7dd5011fa287addc11ca6f3f302372bdcc136b6a&quot;&gt;codecov.io&lt;/a&gt; tells us about the testing. Below is a screenshot of the coverage report.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/sreen_shot_code_cov_eg.png&quot; alt=&quot;calculator code coverage&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As we can see the tests missed the &lt;code&gt;return a&lt;/code&gt; statement at the bottom &lt;code&gt;abs&lt;/code&gt; function. Therefore, ideally, we require another test function like&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;calculator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If both test functions are present we can be sure that the &lt;code&gt;abs&lt;/code&gt; function is reliable.&lt;/p&gt;
+
+&lt;h2 id=&quot;setting-up-a-codecov-report-using-travisci&quot;&gt;Setting up a &lt;code&gt;codecov&lt;/code&gt; report using TravisCI&lt;/h2&gt;
+
+&lt;p&gt;If your code is under a continuous integration platform, we can easily integrate the code to the a coverage platform like &lt;a href=&quot;https://codecov.io/&quot;&gt;codecov&lt;/a&gt;. All you have to do is add a few lines in the &lt;code&gt;.travis.yml&lt;/code&gt; file. Below is an example&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;make testCalculator&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;./Calculator/testCalculator&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;gcov Calculator/testCalculator --object-directory=Calculator/CMakeFiles/testCalculator.dir/testCalculator.cpp.gcno&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ls -la&lt;/span&gt;
+
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;after_success&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bash &amp;lt;(curl -s https://codecov.io/bash)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The next steps are&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;make an account in &lt;a href=&quot;https://codecov.io/&quot;&gt;codecov&lt;/a&gt; and&lt;/li&gt;
+  &lt;li&gt;add your repository to the dashboard. &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If you are linking your &lt;a href=&quot;https://github.com/&quot;&gt;github&lt;/a&gt;, then adding a public repository is straightforward. My example repository can be found &lt;a href=&quot;https://github.com/tbs1980/CodCov&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/code-coverage-with-gcov/&quot;&gt;Analysing code coverage using gcov&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on August 30, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
   <title type="html"><![CDATA[Intel Xeon Phi for High Performance Computing]]></title>
- <link rel="alternate" type="text/html" href="/intel-xeon-phi/" />
-  <id>/intel-xeon-phi</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/intel-xeon-phi/" />
+  <id>http://tbs1980.github.io/intel-xeon-phi</id>
   <updated>2015-07-28T00:00:00-00:00</updated>
   <published>2015-07-28T00:00:00+01:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -193,21 +309,21 @@
 
 &lt;p&gt;I may not get the exact CPU/Memory config and I have a 5110P instead of 31S1P. So far I have the first 4 in the list. I will update this blog as I make progress :)&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/intel-xeon-phi/&quot;&gt;Intel Xeon Phi for High Performance Computing&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on July 28, 2015.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/intel-xeon-phi/&quot;&gt;Intel Xeon Phi for High Performance Computing&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on July 28, 2015.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[FPGA for scientific computing]]></title>
- <link rel="alternate" type="text/html" href="/fpga-based-hpc/" />
-  <id>/fpga-based-hpc</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/fpga-based-hpc/" />
+  <id>http://tbs1980.github.io/fpga-based-hpc</id>
   <updated>2015-06-24T00:00:00-00:00</updated>
   <published>2015-06-24T00:00:00+01:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -225,21 +341,21 @@
 
 &lt;p&gt;&lt;img src=&quot;/images/fpga_avg_time_energy.png&quot; alt=&quot;time-energy&quot; /&gt;&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/fpga-based-hpc/&quot;&gt;FPGA for scientific computing&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on June 24, 2015.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/fpga-based-hpc/&quot;&gt;FPGA for scientific computing&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on June 24, 2015.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Stochastic gradient Hamiltonian Monte Carlo]]></title>
- <link rel="alternate" type="text/html" href="/stochastic-gradient-hmc/" />
-  <id>/stochastic-gradient-hmc</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/stochastic-gradient-hmc/" />
+  <id>http://tbs1980.github.io/stochastic-gradient-hmc</id>
   <updated>2015-05-03T00:00:00-00:00</updated>
   <published>2015-05-03T00:00:00+01:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -273,21 +389,21 @@
 
 &lt;p&gt;can have huge effect on the performance of the sampler.&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/stochastic-gradient-hmc/&quot;&gt;Stochastic gradient Hamiltonian Monte Carlo&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on May 03, 2015.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/stochastic-gradient-hmc/&quot;&gt;Stochastic gradient Hamiltonian Monte Carlo&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on May 03, 2015.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[OpenACC based scientific computing]]></title>
- <link rel="alternate" type="text/html" href="/openacc-compilers/" />
-  <id>/openacc-compilers</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/openacc-compilers/" />
+  <id>http://tbs1980.github.io/openacc-compilers</id>
   <updated>2015-04-19T00:00:00-00:00</updated>
   <published>2015-04-19T00:00:00+01:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -370,21 +486,21 @@
 
 &lt;p&gt;The most difficult bit is to get a compiler installed. The rest is very exciting!&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/openacc-compilers/&quot;&gt;OpenACC based scientific computing&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on April 19, 2015.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/openacc-compilers/&quot;&gt;OpenACC based scientific computing&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on April 19, 2015.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Integrating github projects with Travis-CI]]></title>
- <link rel="alternate" type="text/html" href="/travis-ci-integration/" />
-  <id>/travis-ci-integration</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/travis-ci-integration/" />
+  <id>http://tbs1980.github.io/travis-ci-integration</id>
   <updated>2015-03-28T00:00:00-00:00</updated>
   <published>2015-03-28T00:00:00+00:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -435,21 +551,21 @@
 
 &lt;p&gt;You can even embed the build status in the README.md of your project. See the documentation &lt;a href=&quot;http://docs.travis-ci.com/user/status-images/&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/travis-ci-integration/&quot;&gt;Integrating github projects with Travis-CI&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on March 28, 2015.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/travis-ci-integration/&quot;&gt;Integrating github projects with Travis-CI&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on March 28, 2015.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Rust programming language]]></title>
- <link rel="alternate" type="text/html" href="/rust-language/" />
-  <id>/rust-language</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/rust-language/" />
+  <id>http://tbs1980.github.io/rust-language</id>
   <updated>2015-02-05T00:00:00-00:00</updated>
   <published>2015-02-05T00:00:00+00:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -510,21 +626,21 @@ demo:6 }
 
 &lt;p&gt;In any case I have enjoyed programming in Rust. :) &lt;a href=&quot;https://github.com/tbs1980/Rust&quot;&gt;Here&lt;/a&gt; is my collection of examples.&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/rust-language/&quot;&gt;Rust programming language&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on February 05, 2015.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/rust-language/&quot;&gt;Rust programming language&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on February 05, 2015.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Finding nearest neighbors in large dimensions]]></title>
- <link rel="alternate" type="text/html" href="/nearest-neighbor-algorithms/" />
-  <id>/nearest-neighbor-algorithms</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/nearest-neighbor-algorithms/" />
+  <id>http://tbs1980.github.io/nearest-neighbor-algorithms</id>
   <updated>2015-01-20T00:00:00-00:00</updated>
   <published>2015-01-20T00:00:00+00:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -579,21 +695,21 @@ demo:6 }
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-    &lt;p&gt;&lt;a href=&quot;/nearest-neighbor-algorithms/&quot;&gt;Finding nearest neighbors in large dimensions&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on January 20, 2015.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/nearest-neighbor-algorithms/&quot;&gt;Finding nearest neighbors in large dimensions&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on January 20, 2015.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Kernel density estimation]]></title>
- <link rel="alternate" type="text/html" href="/kernel-density-estimation/" />
-  <id>/kernel-density-estimation</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/kernel-density-estimation/" />
+  <id>http://tbs1980.github.io/kernel-density-estimation</id>
   <updated>2014-12-22T00:00:00-00:00</updated>
   <published>2014-12-22T00:00:00+00:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -694,21 +810,21 @@ demo:6 }
 
 &lt;p&gt;&lt;img src=&quot;/images/demoBiVariateGauss.png&quot; alt=&quot;KDE&quot; /&gt;&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/kernel-density-estimation/&quot;&gt;Kernel density estimation&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on December 22, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/kernel-density-estimation/&quot;&gt;Kernel density estimation&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on December 22, 2014.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[GPU based linear algebra libraries]]></title>
- <link rel="alternate" type="text/html" href="/opencl-cuda-linear-algebra/" />
-  <id>/opencl-cuda-linear-algebra</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/opencl-cuda-linear-algebra/" />
+  <id>http://tbs1980.github.io/opencl-cuda-linear-algebra</id>
   <updated>2014-11-30T00:00:00-00:00</updated>
   <published>2014-11-30T00:00:00+00:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -738,21 +854,21 @@ demo:6 }
   &lt;li&gt;&lt;a href=&quot;http://arrayfire.com/&quot;&gt;ArrayFire&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/opencl-cuda-linear-algebra/&quot;&gt;GPU based linear algebra libraries&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on November 30, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/opencl-cuda-linear-algebra/&quot;&gt;GPU based linear algebra libraries&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on November 30, 2014.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[In love with CMake]]></title>
- <link rel="alternate" type="text/html" href="/loving-cmake/" />
-  <id>/loving-cmake</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/loving-cmake/" />
+  <id>http://tbs1980.github.io/loving-cmake</id>
   <updated>2014-10-04T00:00:00-00:00</updated>
   <published>2014-10-04T00:00:00+01:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -781,20 +897,20 @@ demo:6 }
   &lt;li&gt;support for Doxygen&lt;/li&gt;
 &lt;/ol&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/loving-cmake/&quot;&gt;In love with CMake&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on October 04, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/loving-cmake/&quot;&gt;In love with CMake&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on October 04, 2014.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Linux/HPC introductory workshop at UCL Astrophysics Group]]></title>
- <link rel="alternate" type="text/html" href="/linux-workshop/" />
-  <id>/linux-workshop</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/linux-workshop/" />
+  <id>http://tbs1980.github.io/linux-workshop</id>
   <published>2014-09-14T00:00:00+01:00</published>
   <updated>2014-09-14T00:00:00+01:00</updated>
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -808,21 +924,21 @@ demo:6 }
 
 &lt;p&gt;I also gave a brief idea about the HPC facilities in the department and briefly mentioned best practices. Next year I plan to do a separate session on HPC.&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/linux-workshop/&quot;&gt;Linux/HPC introductory workshop at UCL Astrophysics Group&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on September 14, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/linux-workshop/&quot;&gt;Linux/HPC introductory workshop at UCL Astrophysics Group&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on September 14, 2014.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[GPU computing examples]]></title>
- <link rel="alternate" type="text/html" href="/gpu-computing-examples/" />
-  <id>/gpu-computing-examples</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/gpu-computing-examples/" />
+  <id>http://tbs1980.github.io/gpu-computing-examples</id>
   <updated>2014-08-27T00:00:00-00:00</updated>
   <published>2014-08-27T00:00:00+01:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -841,21 +957,21 @@ demo:6 }
 
 &lt;p&gt;I started adding the examples to a repository in &lt;a href=&quot;https://github.com/tbs1980/GpuCompute&quot;&gt;GitHub&lt;/a&gt;. For each example I clearly indicated where the original source came from and what license it is distributed under.&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/gpu-computing-examples/&quot;&gt;GPU computing examples&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on August 27, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/gpu-computing-examples/&quot;&gt;GPU computing examples&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on August 27, 2014.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Sun T-1000 server]]></title>
- <link rel="alternate" type="text/html" href="/sun-t-1000-machines/" />
-  <id>/sun-t-1000-machines</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/sun-t-1000-machines/" />
+  <id>http://tbs1980.github.io/sun-t-1000-machines</id>
   <updated>2014-07-07T00:00:00-00:00</updated>
   <published>2014-07-07T00:00:00+01:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -1014,21 +1130,21 @@ nvramrc (making new commands permanent)
 
 &lt;p&gt;where host-ip is the ip-address of the sun-machine (the current one) the tftp address is the address of the machine where the tftp server is hosted. It is followed by the name of the boot image. More documentation can be found at&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/sun-t-1000-machines/&quot;&gt;Sun T-1000 server&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on July 07, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/sun-t-1000-machines/&quot;&gt;Sun T-1000 server&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on July 07, 2014.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Kaggle DecMeg Competition]]></title>
- <link rel="alternate" type="text/html" href="/kaggle-decmeg/" />
-  <id>/kaggle-decmeg</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/kaggle-decmeg/" />
+  <id>http://tbs1980.github.io/kaggle-decmeg</id>
   <updated>2014-06-29.T00:00:00-00:00</updated>
   <published>2014-06-29T00:00:00+01:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -1040,21 +1156,21 @@ nvramrc (making new commands permanent)
 
 &lt;p&gt;Comparing my code to the winners I find that my way of thinking is not really what the machine learning people think. It was a great &lt;em&gt;machine&lt;/em&gt; learning experience! My code is in &lt;a href=&quot;https://github.com/tbs1980/Kaggle_DecMeg2014&quot;&gt;GitHub&lt;/a&gt; now.&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/kaggle-decmeg/&quot;&gt;Kaggle DecMeg Competition&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on June 29, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/kaggle-decmeg/&quot;&gt;Kaggle DecMeg Competition&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on June 29, 2014.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Hamiltonian sampling]]></title>
- <link rel="alternate" type="text/html" href="/hamiltonian-sampling/" />
-  <id>/hamiltonian-sampling</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/hamiltonian-sampling/" />
+  <id>http://tbs1980.github.io/hamiltonian-sampling</id>
   <updated>2014-05-19T00:00:00-00:00</updated>
   <published>2014-05-19T00:00:00+01:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -1072,21 +1188,21 @@ nvramrc (making new commands permanent)
 
 &lt;p&gt;I started with a fortran code which can be found &lt;a href=&quot;&quot;&gt;here&lt;/a&gt;, then moved to a c version called &lt;a href=&quot;https://github.com/tbs1980/Ellipsis&quot;&gt;Ellipsis&lt;/a&gt; and finally created a &lt;a href=&quot;&quot;&gt;CUDA version&lt;/a&gt;. For the CUDA version I get really big speed up. You can see the plots below.&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/hamiltonian-sampling/&quot;&gt;Hamiltonian sampling&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on May 19, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/hamiltonian-sampling/&quot;&gt;Hamiltonian sampling&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on May 19, 2014.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Numerical optimization codes]]></title>
- <link rel="alternate" type="text/html" href="/numerical-optimsation/" />
-  <id>/numerical-optimsation</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/numerical-optimsation/" />
+  <id>http://tbs1980.github.io/numerical-optimsation</id>
   <updated>2014-04-12T00:00:00-00:00</updated>
   <published>2014-04-12T00:00:00+01:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -1454,21 +1570,21 @@ nvramrc (making new commands permanent)
 
 &lt;p&gt;I find it true. I have tried it with a problem of 1e6 dimensions and it worked. My problem was unimodal and with minor correlations between parameters. Analytical gradients were available as well.&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/numerical-optimsation/&quot;&gt;Numerical optimization codes&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on April 12, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/numerical-optimsation/&quot;&gt;Numerical optimization codes&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on April 12, 2014.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Spline libraries for scientific computation]]></title>
- <link rel="alternate" type="text/html" href="/splines/" />
-  <id>/splines</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/splines/" />
+  <id>http://tbs1980.github.io/splines</id>
   <updated>2014-03-22T00:00:00-00:00</updated>
   <published>2014-03-22T00:00:00+00:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -1518,21 +1634,21 @@ nvramrc (making new commands permanent)
 
 &lt;p&gt;I needed to see how each of these libraries compare to each other and decided to code up a benchmarking repository in github. It can be found &lt;a href=&quot;https://github.com/tbs1980/SplineBenchmarks&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
-    &lt;p&gt;&lt;a href=&quot;/splines/&quot;&gt;Spline libraries for scientific computation&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on March 22, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/splines/&quot;&gt;Spline libraries for scientific computation&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on March 22, 2014.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Open source numerical integration codes]]></title>
- <link rel="alternate" type="text/html" href="/numerical-integration/" />
-  <id>/numerical-integration</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/numerical-integration/" />
+  <id>http://tbs1980.github.io/numerical-integration</id>
   <updated>2014-02-16T00:00:00-00:00</updated>
   <published>2014-02-16T00:00:00+00:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -1647,21 +1763,21 @@ nvramrc (making new commands permanent)
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-    &lt;p&gt;&lt;a href=&quot;/numerical-integration/&quot;&gt;Open source numerical integration codes&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on February 16, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/numerical-integration/&quot;&gt;Open source numerical integration codes&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on February 16, 2014.&lt;/p&gt;
   </content>
 </entry>
 
 
 <entry>
   <title type="html"><![CDATA[Open source spherical harmonics codes]]></title>
- <link rel="alternate" type="text/html" href="/spherical-harmonics/" />
-  <id>/spherical-harmonics</id>
+ <link rel="alternate" type="text/html" href="http://tbs1980.github.io/spherical-harmonics/" />
+  <id>http://tbs1980.github.io/spherical-harmonics</id>
   <updated>2014-01-05T00:00:00-00:00</updated>
   <published>2014-01-05T00:00:00+00:00</published>
   
   <author>
     <name>Sreekumar Thaithara Balan</name>
-    <uri></uri>
+    <uri>http://tbs1980.github.io</uri>
     <email>sbalan@star.ucl.ac.uk</email>
   </author>
   <content type="html">
@@ -1727,7 +1843,7 @@ nvramrc (making new commands permanent)
     &lt;span class=&quot;n&quot;&gt;MPI_Comm&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;comm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-    &lt;p&gt;&lt;a href=&quot;/spherical-harmonics/&quot;&gt;Open source spherical harmonics codes&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on January 05, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://tbs1980.github.io/spherical-harmonics/&quot;&gt;Open source spherical harmonics codes&lt;/a&gt; was originally published by Sreekumar Thaithara Balan at &lt;a href=&quot;http://tbs1980.github.io&quot;&gt;Sreekumar Thaithara Balan's Blog&lt;/a&gt; on January 05, 2014.&lt;/p&gt;
   </content>
 </entry>
 
