@@ -1,15 +1,14 @@
-title: Pudhina Fresh # Shown in header on pages with full_logo: true
-short_logo: PF. # Shown in header on all pages by default unless full_logo: true is set
-description: > # The description for your site
-  A minimal yet feature-rich Jekyll theme made for personal websites and blogs.
-url: "https://ritijjain.github.io/pudhina-fresh" # Site base URL
+title: Sreekumar Thaithara Balan # Shown in header on pages with full_logo: true
+short_logo: S.T.B. # Shown in header on all pages by default unless full_logo: true is set
+description: Sreekumar Thaithara Balan's page. # The description for your site
+url: "https://tbs1980.github.io" # Site base URL
 
 author:
-  name: Ritij Jain
-  github: ritijjain/pudhina-fresh # GitHub username, used for GitHub icon on the top right
-  linkedin: ritijjain # Your LinkedIn profile url name, used for LinkedIn icon on the top right
-  email: example@example.com # Used for email icon on the top right
-  homepage: https://ritijjain.com # This links to your name in post meta
+  name: Sreekumar Thaithara Balan
+  github: tbs1980 # GitHub username, used for GitHub icon on the top right
+  linkedin: stbalan # Your LinkedIn profile url name, used for LinkedIn icon on the top right
+  email: tbs1980@gmail.com # Used for email icon on the top right
+  homepage: https://tbs1980.github.io # This links to your name in post meta
   twitter: # Twitter username, used for Twitter Card Analytics 
 
 disqus_name: # Setting this will turn on Disqus comments
@@ -23,13 +22,6 @@ defaults: # Recommended defaults, you may set your own
       path: _posts
     values:
       comments: true
-  -
-    scope:
-      path: pages/redirects
-    values:
-      layout: redirect
-      index: false
-      listed: false
   -
     scope:
       path: pages/tags
