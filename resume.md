@@ -9,38 +9,48 @@ subtitle: Curious Mind, Data-Driven Heart
 <span style="float: right; "><a href="{{ '/assets/resume.pdf' | prepend: site.baseurl }}"><strong>> Download as PDF</strong></a> </span>
 <br>
 
-### INTRO
-```I'm Sreekumar, a data scientist and AI researcher with expertise in Bayesian inference, time series modeling, and machine learning. I’ve led data science teams, co-founded an AI-driven startup, and worked on astrophysical research that led to the discovery of extra-solar planets. My work spans startups, academia, and real-world AI applications.```  
+### 🔍 About Me
+Machine learning engineer and deep tech enthusiast with a background in astrophysics and high-performance computing. I’ve led AI teams in startups, co-founded a deep learning hedge fund, and built ML systems that power real-world decisions. I’m passionate about foundational models, energy-efficient ML, and applying scientific thinking to solve complex problems.  
+ 
+---
 
+### 🚀 Experience Highlights
 
-### EXPERIENCE
+##### Head of Data Science – *Proportunity*
+*2018 – 2024, London (Acquired)*
 
-##### Head of Data Science - **Proportunity** <span style="float: right; ">2022-2024</span>  
-Joined the company at the seed stage as the 5th employee and grew the data science team to 5 scientists and engineers. Led the design and development of a Machine Learning (ML) model ensemble; achieved industry-leading accuracy of 93%. Worked closely with the product team to deploy the company's data-driven real estate market intelligence platform incorporating six datasets,  resulting in approximately 20% improvement in the website visitors using the platform.
+- Built and led a team of ML engineers and data scientists from seed to acquisition.
+- Developed predictive ML models for real estate price growth — 93% accuracy, powering underwriting for £20M+ in loans.
+- Integrated models into GCP pipelines; directly influenced investment and risk decisions.
 
  
-##### Co-founder & CTO - **Alpha-I** <span style="float: right; ">2016-2018</span>  
-Co-founded an AI powered hedge fund and spearheaded the development of a Bayesian Deep Learning model for trading S&P-500 stocks; raised close to $1 million in seed funding through Entrepreneur First and other global VCs. 
+##### Co-founder & CTO – *Alpha-I*  
+*2016 – 2018, London*  
+- Founded a VC-backed deep learning hedge fund via Entrepreneur First.  
+- Designed Bayesian deep learning models for S&P 500 time-series forecasting.  
+- Raised ~$1M in seed funding; led ML research, infra, and strategy. 
 
-##### Postdoctoral Research Associate - **University College London** <span style="float: right; ">2012-2016</span>  
-Researched and developed cutting-edge Bayesian statistical methods with High Performance Computing (HPC) for analysing cosmological data from space telescopes; 20 peer reviewed publications.
+##### Postdoctoral Researcher – *University College London*  
+*2013 – 2016*  
+- Developed Bayesian inference methods to analyse cosmological data from space telescopes.  
+- Co-authored 20+ peer-reviewed publications.
+- Supervised PhD students and published in leading astrophysics journals.
 
-### EDUCATION
+---
 
-##### University of Cambridge, UK <span style="float: right; ">2008-2012</span>  
-**Doctor of Philosophy in Astrophysics**  
-Developed highly efficient Bayesian Statistical methods for astrophysical and cosmological data analysis, resulting in the co-discovery of 3 new extra solar planets. 
- 
-##### University College London, UK <span style="float: right; ">2006-2007</span>  
-**Master of Science in Physics**  
-Researched and developed a novel Bayesian technique for detecting extra-solar planets and estimating their orbital parameters, resulting in the publication of the Masters thesis as an article in the prestigious Monthly Notices of the Royal Astronomical Society journal.
+### 🧠 Skills & Tools
+**Languages:** Python, C++, SQL  
+**ML/AI:** PyTorch, TensorFlow, Bayesian methods, time-series forecasting  
+**MLOps & Infra:** GCP, Airflow, MLFlow, Git, model deployment  
+**Focus Areas:** Energy-efficient ML, foundational models  
 
-##### National Institute of Technology, Calicut, India <span style="float: right; ">1998-2002</span>  
-**Bachelor of Technology in Mechanical Engineering**
+---
 
+### 📚 Education
 
-### RECOGNITION
+**PhD in Astrophysics** – *University of Cambridge*  
+*Isaac Newton Scholar; research on Bayesian inference for space telescope data.*  
 
-- Prestigious Isaac Newton Scholarship (awarded to 2 out 1000 applicants) @ Cambridge
-- Awarded Master of Science with Distinction @ UCL 
-- Achieved top 2% (108th out of 5558 participants) in Kaggle M5 Time Series Forecasting Competition
+**MSc in Astrophysics (Distinction)** – *University College London*  
+*Thesis: Bayesian orbital estimation for exoplanet detection using MCMC; published in MNRAS.*
+
